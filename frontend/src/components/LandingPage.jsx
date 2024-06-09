@@ -1,12 +1,29 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Register from './Register'
+import Login from './Login'
 
 const LandingPage = () => {
+    const [register,setRegister] = useState(false)
+    const [login,setLogin] = useState(false)
+    const closeModal = () =>{
+        setLogin(false)
+        setRegister(false)
+    }
+    const openRegister = () =>{
+        setLogin(false)
+        setRegister(true)
+    }
+    const openLogin = () =>{
+        setRegister(false)
+        setLogin(true)
+    }
     useEffect(() => {
         document.title = "Medium – Where good ideas find you."
     }, [])
 
     return (
+        <>
         <div className='h-[100vh] w-full bg-[#F7F4ED] lg:overflow-hidden'>
             <div className='border-b border-black'>
                 <div className='container px-5 mx-auto flex items-center h-[10vh] justify-between'>
@@ -19,8 +36,8 @@ const LandingPage = () => {
                         <Link to={"/"} className='hidden md:block'>Our story</Link>
                         <Link to={"/"} className='hidden md:block'>Membership</Link>
                         <Link to={"/"} className='hidden md:block'>Write</Link>
-                        <Link to={"/"} className='hidden md:block'>Sign in</Link>
-                        <button className='bg-[#191919] text-white px-4 py-2 rounded-full'>Get Started</button>
+                        <Link to={"/"} className='hidden md:block' onClick={openLogin}>Sign in</Link>
+                        <button className='bg-[#191919] text-white px-4 py-2 rounded-full' onClick={()=>setRegister(true)}>Get Started</button>
                     </div>
                 </div>
             </div>
@@ -28,7 +45,7 @@ const LandingPage = () => {
                 <div className='lg:w-1/2 w-full'>
                     <h1 className='lg:text-8xl text-6xl font-serif text-[#242424]'>Human <br />stories & ideas</h1>
                     <p className='my-6 text-2xl'>A place to read, write, and deepen your understanding</p>
-                    <button className='px-6 py-2 mt-5 font-semibold bg-[#191919] text-white text-lg rounded-full'>Start reading</button>
+                    <button className='px-6 py-2 mt-5 font-semibold bg-[#191919] text-white text-lg rounded-full' onClick={()=>setRegister(true)}>Start reading</button>
                 </div>
                 <div className='h-[80vh] lg:block hidden absolute  w-1/2 right-0 overflow-hidden'>
                 <img src="landing.webp" alt="landing page" className='w-[70%] absolute -top-16 right-0' />
@@ -47,6 +64,13 @@ const LandingPage = () => {
                 <span className='hidden lg:block'>Teams</span>
             </div>
         </div>
+        {
+            register && <Register openLogin={openLogin} openRegister={openRegister} closeModal={closeModal}/>
+        }
+        {
+            login && <Login  openRegister={openRegister} closeModal={closeModal}/>
+        }
+        </>
     )
 }
 
