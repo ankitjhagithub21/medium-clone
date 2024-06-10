@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Register from './Register'
 import Login from './Login'
 
-const LandingPage = () => {
+const LandingPage = ({getUserFromServer}) => {
     const [register,setRegister] = useState(false)
     const [login,setLogin] = useState(false)
     const closeModal = () =>{
@@ -19,7 +19,9 @@ const LandingPage = () => {
         setLogin(true)
     }
     useEffect(() => {
+       
         document.title = "Medium – Where good ideas find you."
+        
     }, [])
 
     return (
@@ -47,8 +49,8 @@ const LandingPage = () => {
                     <p className='my-6 text-2xl'>A place to read, write, and deepen your understanding</p>
                     <button className='px-6 py-2 mt-5 font-semibold bg-[#191919] text-white text-lg rounded-full' onClick={()=>setRegister(true)}>Start reading</button>
                 </div>
-                <div className='h-[80vh] lg:block hidden absolute  w-1/2 right-0 overflow-hidden'>
-                <img src="landing.webp" alt="landing page" className='w-[70%] absolute -top-16 right-0' />
+                <div className='h-[80vh] hidden   absolute  lg:flex items-center justify-center    w-1/2 right-0 overflow-hidden'>
+                <img src="landing.webp" alt="landing page"  />
                 </div>
             </div>
             <div className='border-t  border-black h-[10vh] flex items-center justify-center gap-5 text-gray-600 text-sm'>
@@ -68,7 +70,7 @@ const LandingPage = () => {
             register && <Register openLogin={openLogin} openRegister={openRegister} closeModal={closeModal}/>
         }
         {
-            login && <Login  openRegister={openRegister} closeModal={closeModal}/>
+            login && <Login  openRegister={openRegister} closeModal={closeModal} getUserFromServer={getUserFromServer}/>
         }
         </>
     )

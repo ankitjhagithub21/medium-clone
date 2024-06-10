@@ -4,21 +4,21 @@ const bcrypt = require('bcrypt')
 
 const register = async(req,res) =>{
     try{
-        const {name,username,password} = req.body;
+        const {name,email,password} = req.body;
 
-        if(!name || !username || !password){
+        if(!name || !email || !password){
             return res.status(400).json({
                 success:false,
                 message:"All fields are required."
             })
         }
 
-        const user = await User.findOne({username})
+        const user = await User.findOne({email})
         
         if(user){
             return res.status(400).json({
                 success:false,
-                message:"Username already exist."
+                message:"Email already exist."
             })
         }
 
@@ -26,7 +26,7 @@ const register = async(req,res) =>{
 
         const newUser = new User({
             name,
-            username,
+            email,
             password:securePassword
         })
 
@@ -49,9 +49,9 @@ const register = async(req,res) =>{
 const login = async(req,res) =>{
     try{
 
-        const {username,password} = req.body;
+        const {email,password} = req.body;
 
-        if(!username || !password){
+        if(!email || !password){
             return res.status(400).json({
                 success:false,
                 message:"All fields are required."
@@ -59,12 +59,12 @@ const login = async(req,res) =>{
         }
 
 
-        const user = await User.findOne({username})
+        const user = await User.findOne({email})
         
         if(!user){
             return res.status(404).json({
                 success:false,
-                message:"Wrong username or password."
+                message:"Wrong email or password."
             })    
         }
 
@@ -73,7 +73,7 @@ const login = async(req,res) =>{
         if(!comparePassword){
             return res.status(404).json({
                 success:false,
-                message:"Wrong username or password."
+                message:"Wrong email or password."
             })
         }
 
@@ -101,7 +101,10 @@ const login = async(req,res) =>{
 const logout = async(req,res) =>{
     try{
         res.cookie('token','',{
-            expires:new Date(0)
+            httpOnly:true,
+            secure:true,
+            sameSite:'none',
+            expires:new Date(Date.now())
         }).status(200).json({
             success:true,
             message:"Logout successfull."
