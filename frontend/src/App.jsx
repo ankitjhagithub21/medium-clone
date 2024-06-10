@@ -7,6 +7,7 @@ import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from './app/slices/authSlice'
+import NewStory from './pages/NewStory'
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state=>state.auth.user)
@@ -33,11 +34,9 @@ const App = () => {
     
     <>
     <Toaster/>
-    {
-      user && <Navbar/>
-    }
     <Routes>
       <Route path='/' element={user ? <Home /> : <LandingPage getUserFromServer={getUserFromServer}/>}/>
+      <Route path='/new-story' element={user ? <NewStory /> : <Home/>}/>
     </Routes>
    
     </>

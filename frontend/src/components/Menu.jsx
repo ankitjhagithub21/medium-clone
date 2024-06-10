@@ -2,6 +2,7 @@ import React from 'react'
 import {useSelector,useDispatch} from "react-redux"
 import toast from "react-hot-toast"
 import {setUser} from "../app/slices/authSlice"
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
     const dispatch = useDispatch()
@@ -25,8 +26,8 @@ const Menu = () => {
     }
     return (
         <div className='flex flex-col items-start gap-5 p-5 absolute top-12 right-5 w-64 z-50 shadow text-gray-600 rounded bg-white'>
-            <div className='md:hidden flex items-center gap-4 hover:text-black cursor-pointer'>
-                <svg width={24} height={24} viewBox="0 0 24 24" fill="none" aria-label="Write">
+            <Link className='md:hidden flex items-center gap-4 hover:text-black cursor-pointer'>
+                <svg width={24} height={24} viewBox="0 0 24 24" fill="none" aria-label="Write" to={"/new-story"}>
                     <path
                         d="M14 4a.5.5 0 0 0 0-1v1zm7 6a.5.5 0 0 0-1 0h1zm-7-7H4v1h10V3zM3 4v16h1V4H3zm1 17h16v-1H4v1zm17-1V10h-1v10h1zm-1 1a1 1 0 0 0 1-1h-1v1zM3 20a1 1 0 0 0 1 1v-1H3zM4 3a1 1 0 0 0-1 1h1V3z"
                         fill="currentColor"
@@ -37,7 +38,7 @@ const Menu = () => {
                     />
                 </svg>
                 <span className='text-sm'>Write</span>
-            </div>
+            </Link>
             <div className='flex items-center gap-4 hover:text-black cursor-pointer'>
                 <svg
                     width={24}

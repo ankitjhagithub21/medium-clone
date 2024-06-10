@@ -14,12 +14,12 @@ const uploadBlog = async (req, res) => {
 
 
         const user = req.user;
-        const { title, content } = req.body;
+        const { title, content , topic } = req.body;
 
-        if (!title || !content) {
+        if (!title || !content || !topic) {
             return res.status(400).json({
                 success: false,
-                message: "Title and content are required."
+                message: "All fields are required."
             });
         }
 
@@ -38,6 +38,7 @@ const uploadBlog = async (req, res) => {
         const newBlog = new Blog({
             title,
             content,
+            topic,
             thumbnail: req.file.path,
             author: user._id
         });
