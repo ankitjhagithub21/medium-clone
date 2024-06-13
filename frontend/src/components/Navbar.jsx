@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import Menu from './Menu'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     const [isOpen,setIsOpen] = useState(false)
+    const user = useSelector(state=>state.auth.user)
     return (
         <nav className='flex itesms-center justify-between py-2 px-4 border-b'>
             <div className='flex items-center gap-4'>
-                <div>
+                <Link to={"/"}>
                     <svg width={120} height={27} viewBox="0 0 120 27" fill="none">
                         <mask
                             id="logo-wordmark-pride_svg__a"
@@ -87,7 +89,7 @@ const Navbar = () => {
                             </filter>
                         </defs>
                     </svg>
-                </div>
+                </Link>
                 <div className=' items-center gap-2 bg-gray-100 p-2 rounded-full hidden md:flex'>
                     <div>
                         <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
@@ -152,7 +154,7 @@ const Navbar = () => {
                     </svg>
                 </div>
                 <div className='cursor-pointer' onClick={()=>setIsOpen(!isOpen)}>
-                    <img src="https://miro.medium.com/v2/resize:fill:64:64/1*z0h5dX6NFLPrQNb--mwteQ.png" alt="profile pic" className='rounded-full w-8 border'/>
+                    <img src={user?.profilePhoto} alt="profile pic" className='rounded-full w-8 border'/>
                 </div>
             </div>
            {

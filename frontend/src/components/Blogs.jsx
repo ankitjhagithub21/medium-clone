@@ -3,6 +3,7 @@ import Blog from './Blog'
 
 const Blogs = () => {
   const [blogs,setBlogs] = useState([])
+
   useEffect(()=>{
     const fetchBlogs = async() =>{
       try{
@@ -10,6 +11,7 @@ const Blogs = () => {
         const data = await res.json()
         if(data.success){
           setBlogs(data.blogs)
+         
         }
       }catch(error){
         console.log(error)

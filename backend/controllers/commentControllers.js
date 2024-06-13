@@ -1,5 +1,6 @@
 const Blog = require("../models/blog")
 const Comment = require("../models/comment")
+const User = require("../models/user")
 
 const addComment = async (req, res) => {
     try {
@@ -105,8 +106,38 @@ const deleteComment = async (req, res) => {
     }
 }
 
+const getComments = async (req, res) => {
+    try {
+        const { blogId } = req.params;
+
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found."
+            });
+        }
+        const comments = await Comment.find({blogId:blog._id}).populate('userId','name profilePhoto')
+       
+       
+        
+
+        res.status(200).json({
+            success: true,
+            comments
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+
 
 module.exports = {
     addComment,
-    deleteComment
+    deleteComment,
+    getComments
 }

@@ -174,7 +174,7 @@ const updateBlog = async (req, res) => {
 
 const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({})
+        const blogs = await Blog.find({}).populate('author', 'name profilePhoto') 
         if (!blogs) {
             return res.status(404).json({
                 success: false,
@@ -185,7 +185,6 @@ const getAllBlogs = async (req, res) => {
             success: true,
             blogs
         })
-
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -194,10 +193,11 @@ const getAllBlogs = async (req, res) => {
     }
 }
 
+
 const getSingleBlog = async (req, res) => {
     try {
         const blogId = req.params.id;
-        const blog = await Blog.findById(blogId);
+        const blog = await Blog.findById(blogId).populate('author','name profilePhoto');
 
         if (!blog) {
             return res.status(404).json({

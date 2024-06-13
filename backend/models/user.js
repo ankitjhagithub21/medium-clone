@@ -10,7 +10,6 @@ const userSchema = new Schema({
     },
     profilePhoto:{
         type:String,
-        required:true,
         default:"https://cdn-icons-png.flaticon.com/512/149/149071.png"
     },
     blogs: [{ type: Schema.Types.ObjectId, ref: 'Blog' }],
