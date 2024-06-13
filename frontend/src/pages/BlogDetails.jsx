@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from 'react-redux';
-import {FaTrash} from "react-icons/fa"
+import { FaTrash } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import PageLoading from './PageLoading';
 
@@ -17,6 +17,9 @@ const BlogDetails = () => {
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
     const [loadingComments, setLoadingComments] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0); 
+    const [commentCount,setCommentCount] = useState(0);
 
     const handleAddComment = async (e) => {
         e.preventDefault();
@@ -35,6 +38,7 @@ const BlogDetails = () => {
                 toast.success(data.message);
                 setContent('');
                 fetchComments();
+                setCommentCount(commentCount+1)
             } else {
                 toast.error(data.message);
             }
@@ -56,6 +60,8 @@ const BlogDetails = () => {
             if (data.success) {
                 toast.success(data.message);
                 fetchComments();
+                setCommentCount(commentCount-1)
+                
             } else {
                 toast.error(data.message);
             }
@@ -90,6 +96,9 @@ const BlogDetails = () => {
                 const data = await res.json();
                 if (data.success) {
                     setBlog(data.blog);
+                    setLikeCount(data.blog.likes.length); 
+                    setIsLiked(data.blog.likes.includes(user?._id)); 
+                    setCommentCount(data.blog.comments.length)
                 }
             } catch (error) {
                 console.log(error);
@@ -97,6 +106,26 @@ const BlogDetails = () => {
         };
         fetchBlog();
     }, [id]);
+
+    const handleLikeUnlike = async () => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/blogs/like/${id}`, {
+                method: "POST",
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success(data.message);
+                setIsLiked(!isLiked);
+                setLikeCount(prevCount => isLiked ? prevCount - 1 : prevCount + 1); 
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Something went wrong.");
+            console.log(error);
+        }
+    };
 
     if (!blog) {
         return <PageLoading />;
@@ -119,7 +148,7 @@ const BlogDetails = () => {
                 </div>
 
                 <div className="flex items-center gap-5 border-t border-b p-3">
-                    <div className='flex items-center'>
+                    <div className='flex items-center cursor-pointer' onClick={handleLikeUnlike}>
                         <button>
                             <svg width={24} height={24} viewBox="0 0 24 24">
                                 <path
@@ -129,7 +158,7 @@ const BlogDetails = () => {
                                 />
                             </svg>
                         </button>
-                        <span>3k</span>
+                        <span>{likeCount}</span> 
                     </div>
                     <div className='flex items-center cursor-pointer' onClick={() => {
                         fetchComments();
@@ -140,12 +169,12 @@ const BlogDetails = () => {
                                 <path d="M18 16.8a7.14 7.14 0 0 0 2.24-5.32c0-4.12-3.53-7.48-8.05-7.48C7.67 4 4 7.36 4 11.48c0 4.13 3.67 7.48 8.2 7.48a8.9 8.9 0 0 0 2.38-.32c.23.2.48.39.75.56 1.06.69 2.2 1.04 3.4 1.04.22 0 .4-.11.48-.29a.5.5 0 0 0-.04-.52 6.4 6.4 0 0 1-1.16-2.65v.02zm-3.12 1.06l-.06-.22-.32.1a8 8 0 0 1-2.3.33c-4.03 0-7.3-2.96-7.3-6.59S8.17 4.9 12.2 4.9c4 0 7.1 2.96 7.1 6.6 0 1.8-.6 3.47-2.02 4.72l-.2.16v.26l.02.3a6.74 6.74 0 0 0 .88 2.4 5.27 5.27 0 0 1-2.17-.86c-.28-.17-.72-.38-.94-.59l.01-.02z" />
                             </svg>
                         </button>
-                        <span>{blog.comments.length}</span>
+                        <span>{commentCount}</span>
                     </div>
                 </div>
                 <div className='font-serif text-xl leading-relaxed' dangerouslySetInnerHTML={{ __html: blog.content }} />
             </section>
-            <div className={`lg:w-1/3 md:w-1/2 overflow-auto  w-full flex flex-col p-3 gap-5 transition-all shadow-lg h-full bg-white z-50 fixed ${isOpen ? 'right-0' : 'right-[-100%]'} top-0`}>
+            <div className={`lg:w-1/3 md:w-1/2 overflow-auto w-full flex flex-col p-3 gap-5 transition-all shadow-lg h-full bg-white z-50 fixed ${isOpen ? 'right-0' : 'right-[-100%]'} top-0`}>
                 <div className='flex justify-between items-center '>
                     <h2 className='text-2xl font-bold'>Responses ({comments.length})</h2>
                     <button onClick={() => setIsOpen(false)}>
@@ -192,7 +221,7 @@ const BlogDetails = () => {
                                         </div>
                                         {user?._id === comment.userId._id && (
                                             <button onClick={() => handleDeleteComment(comment._id)} className="text-red-500 hover:text-red-700">
-                                               <FaTrash/>
+                                                <FaTrash />
                                             </button>
                                         )}
                                     </div>

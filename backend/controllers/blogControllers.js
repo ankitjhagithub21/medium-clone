@@ -219,11 +219,52 @@ const getSingleBlog = async (req, res) => {
     }
 };
 
+const likeUnlikeBlog = async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const userId = req.user._id;
+
+        const blog = await Blog.findById(blogId);
+        if (!blog) {
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found."
+            });
+        }
+
+        const likeIndex = blog.likes.indexOf(userId);
+
+        if (likeIndex === -1) {
+            blog.likes.push(userId);
+            await blog.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "Blog liked."
+            });
+        } else {
+            blog.likes.splice(likeIndex, 1);
+            await blog.save();
+
+            return res.status(200).json({
+                success: true,
+                message: "Blog unliked."
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     uploadBlog,
     deleteBlog,
     updateBlog,
     getAllBlogs,
-    getSingleBlog
+    getSingleBlog,
+    likeUnlikeBlog
 }
 

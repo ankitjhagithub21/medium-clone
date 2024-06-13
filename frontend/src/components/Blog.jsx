@@ -1,17 +1,20 @@
-import React from 'react'
-import { LuDot } from "react-icons/lu"
+import React from 'react';
+import { LuDot } from "react-icons/lu";
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import truncate from 'html-truncate';
 
 const Blog = ({ blog }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const formattedDate = format(new Date(blog.createdAt), 'MMM dd, yyyy');
-    return (
-        <div className='flex flex-col  w-full'>
+    
+    // Truncate HTML content to a specific length
+    const truncatedContent = truncate(blog.content, 200, { ellipsis: '...' });
 
+    return (
+        <div className='flex flex-col w-full'>
             <div className='flex items-center gap-2 mb-2'>
                 <img src={blog.author.profilePhoto} alt="author pic" className='rounded-full w-6 border' />
-
                 <div className='text-sm flex items-center gap-1'>
                     <span>{blog.author.name}</span>
                     <span>
@@ -20,10 +23,10 @@ const Blog = ({ blog }) => {
                     <span className='text-gray-600'>{formattedDate}</span>
                 </div>
             </div>
-            <div className='flex items-center gap-4 cursor-pointer' onClick={()=>navigate(`/blog/${blog._id}`)}>
-                <div>
+            <div className='flex items-center gap-4 cursor-pointer ' onClick={() => navigate(`/blog/${blog._id}`)}>
+                <div className='w-3/4 '>
                     <h2 className='md:text-2xl mb-2 text-lg font-bold text-gray-800'>{blog.title}</h2>
-                    <p className='text-serif hidden md:block'>{blog.content.slice(0, 200)}...</p>
+                    <p className='text-serif hidden md:block' dangerouslySetInnerHTML={{ __html: truncatedContent }}></p>
                 </div>
                 <div>
                     <img src={`${import.meta.env.VITE_SERVER_URL}/${blog.thumbnail}`} alt="blog thumbnail" loading='lazy' className='object-cover object-center w-44' />
@@ -65,12 +68,8 @@ const Blog = ({ blog }) => {
                     </button>
                 </div>
             </div>
-
-
-
-
         </div>
-    )
+    );
 }
 
-export default Blog
+export default Blog;
