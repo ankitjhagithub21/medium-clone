@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import JoditEditor from 'jodit-react';
 
 const NewStory = () => {
   const [loading, setLoading] = useState(false);
@@ -8,7 +9,7 @@ const NewStory = () => {
   const [content, setContent] = useState('');
   const [topic, setTopic] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
-  const textareaRef = useRef(null);
+  const editor = useRef(null);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -44,24 +45,9 @@ const NewStory = () => {
     }
   };
 
-  const handleContentChange = (e) => {
-    setContent(e.target.value);
-    adjustTextareaHeight();
-  };
-
-  const adjustTextareaHeight = () => {
-    const textarea = textareaRef.current;
-    textarea.style.height = 'auto';
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  };
-
   useEffect(() => {
     document.title = 'New story - Medium';
   }, []);
-
-  useEffect(() => {
-    adjustTextareaHeight();
-  }, [content]);
 
   return (
     <>
@@ -117,14 +103,11 @@ const NewStory = () => {
             placeholder="Topic"
             className="text-lg p-2 border-b-2 border-gray-300 focus:outline-none focus:border-green-500"
           />
-          <textarea
-            ref={textareaRef}
+          <JoditEditor
+            ref={editor}
             value={content}
-            onChange={handleContentChange}
-            placeholder="Tell me your story"
-            className="text-lg p-2 border-b-2 border-gray-300 focus:outline-none focus:border-green-500"
-            style={{ overflow: 'hidden' }}
-          ></textarea>
+            onChange={(newContent) => setContent(newContent)}
+          />
           <div className="relative">
             <input
               type="file"
