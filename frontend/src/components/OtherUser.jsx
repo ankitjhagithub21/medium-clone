@@ -1,20 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
-const OtherUser = () => {
+const OtherUser = ({ user, isFollowing }) => {
+  const [following, setFollowing] = useState(isFollowing);
+
+  const handleFollowUnfollow = async () => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user/follow/${user._id}`, {
+        credentials: 'include'
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(data.message);
+        setFollowing(!following);  
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error!");
+    }
+  };
+
   return (
     <div className='flex items-center gap-2 justify-between'>
       <div className='flex gap-1 items-start'>
-        <img src="https://miro.medium.com/v2/resize:fill:112:112/1*Qu8jfX_Ab4objLtUYavRcw.jpeg" alt="user profile image" className='w-6 rounded-full border'/>
+        <img src={user.profilePhoto} alt="user profile image" className='w-8 rounded-full border' />
         <div>
-            <h2 className='font-bold'>User name</h2>
-            <p className='text-sm'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum consectetur voluptates incidunt magni consequatur doloremque numquam nam, odio nihil impedit?</p>
+          <h2 className='font-bold'>{user.name}</h2>
+          <p className='text-sm'>{user.bio}</p>
         </div>
       </div>
       <div>
-        <button className='px-4 py-2 text-sm border border-black rounded-full'>Follow</button>
+        <button 
+          className='px-4 py-2 text-sm border border-black rounded-full' 
+          onClick={handleFollowUnfollow}
+        >
+          {following ? 'Unfollow' : 'Follow'}
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OtherUser
+export default OtherUser;
