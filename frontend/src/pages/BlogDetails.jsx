@@ -5,12 +5,13 @@ import { format } from 'date-fns';
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import PageLoading from './PageLoading';
 
 const BlogDetails = () => {
     const { id } = useParams();
     const [blog, setBlog] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
-
+    const [uploading,setUploading] =useState(false)
     const user = useSelector((state) => state.auth.user);
     const [content, setContent] = useState('');
     const [comments, setComments] = useState([]);
@@ -19,6 +20,7 @@ const BlogDetails = () => {
     const handleAddComment = async (e) => {
         e.preventDefault();
         try {
+            setUploading(true)
             const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/comment/add/${blog._id}`, {
                 method: "POST",
                 headers: {
@@ -38,6 +40,8 @@ const BlogDetails = () => {
         } catch (error) {
             toast.error("Something went wrong.");
             console.log(error);
+        }finally{
+            setUploading(false)
         }
     };
 
@@ -75,7 +79,7 @@ const BlogDetails = () => {
     }, [id]);
 
     if (!blog) {
-        return <p>Loading...</p>;
+        return <PageLoading/>;
     }
 
     const formattedDate = (date) => format(new Date(date), 'MMM dd, yyyy');
@@ -142,7 +146,9 @@ const BlogDetails = () => {
                     </div>
                     <form className='flex flex-col gap-3' onSubmit={handleAddComment}>
                         <textarea className='h-32 p-2 resize-none' value={content} onChange={(e) => setContent(e.target.value)} placeholder='What are your thoughts?' required></textarea>
-                        <button className={`rounded-full ${content.length === 0 ? 'bg-green-400' : 'bg-green-600'} text-white px-4 py-2 cursor-pointer`} type='submit' disabled={content.length === 0}>Respond</button>
+                        <button className={`rounded-full ${content.length === 0 ? 'bg-green-400' : 'bg-green-600'} text-white px-4 py-2 cursor-pointer`} type='submit' disabled={content.length === 0}>{
+                            uploading ? 'Responding...':'Respond'
+}</button>
                     </form>
                 </div>
                 <div>
@@ -166,7 +172,7 @@ const BlogDetails = () => {
                                     </div>
                                     <p>{comment.content}</p>
                                 </div>
-                            )).reverse() // Reverse comments to display the latest one first
+                            )).reverse()
                         )}
                     </div>
                 </div>
