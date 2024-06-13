@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from 'react-redux';
+import {FaTrash} from "react-icons/fa"
 import toast from 'react-hot-toast';
 import PageLoading from './PageLoading';
 
@@ -42,6 +43,25 @@ const BlogDetails = () => {
             console.log(error);
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        try {
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/comment/${id}/delete/${commentId}`, {
+                method: "DELETE",
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (data.success) {
+                toast.success(data.message);
+                fetchComments();
+            } else {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Failed to delete comment.");
+            console.log(error);
         }
     };
 
@@ -125,7 +145,7 @@ const BlogDetails = () => {
                 </div>
                 <div className='font-serif text-xl leading-relaxed' dangerouslySetInnerHTML={{ __html: blog.content }} />
             </section>
-            <div className={`lg:w-1/3 md:w-1/2 w-full flex flex-col p-3 gap-5 transition-all shadow-lg h-full bg-white z-50 fixed ${isOpen ? 'right-0' : 'right-[-100%]'} top-0`}>
+            <div className={`lg:w-1/3 md:w-1/2 overflow-auto  w-full flex flex-col p-3 gap-5 transition-all shadow-lg h-full bg-white z-50 fixed ${isOpen ? 'right-0' : 'right-[-100%]'} top-0`}>
                 <div className='flex justify-between items-center '>
                     <h2 className='text-2xl font-bold'>Responses ({comments.length})</h2>
                     <button onClick={() => setIsOpen(false)}>
@@ -162,12 +182,19 @@ const BlogDetails = () => {
                         ) : (
                             comments.map(comment => (
                                 <div key={comment._id} className='rounded-lg shadow-lg p-2 flex flex-col gap-2 bg-white'>
-                                    <div className='flex items-center gap-2'>
-                                        <img src={comment.userId.profilePhoto} alt="profile pic" className='w-10 rounded-full' />
-                                        <div className='flex flex-col text-sm'>
-                                            <span className='font-semibold'>{comment.userId.name}</span>
-                                            <span>{formattedDate(comment.date)}</span>
+                                    <div className='flex items-center justify-between'>
+                                        <div className='flex items-center gap-2'>
+                                            <img src={comment.userId.profilePhoto} alt="profile pic" className='w-10 rounded-full' />
+                                            <div className='flex flex-col text-sm'>
+                                                <span className='font-semibold'>{comment.userId.name}</span>
+                                                <span>{formattedDate(comment.date)}</span>
+                                            </div>
                                         </div>
+                                        {user?._id === comment.userId._id && (
+                                            <button onClick={() => handleDeleteComment(comment._id)} className="text-red-500 hover:text-red-700">
+                                               <FaTrash/>
+                                            </button>
+                                        )}
                                     </div>
                                     <p>{comment.content}</p>
                                 </div>
