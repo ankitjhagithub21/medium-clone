@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import truncate from 'html-truncate';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog,profilePhoto,name }) => {
     const navigate = useNavigate();
     const formattedDate = format(new Date(blog.createdAt), 'MMM dd, yyyy');
     
@@ -12,11 +12,11 @@ const Blog = ({ blog }) => {
     const truncatedContent = truncate(blog.content, 200, { ellipsis: '...' });
 
     return (
-        <div className='flex flex-col w-full'>
+        <div className='flex flex-col w-full my-5'>
             <div className='flex items-center gap-2 mb-2'>
-                <img src={blog.author.profilePhoto} alt="author pic" className='rounded-full w-6 border' />
+                <img src={profilePhoto} alt="author pic" className='rounded-full cursor-pointer w-8 border' onClick={()=>navigate(`/user/${blog.author._id}`)}/>
                 <div className='text-sm flex items-center gap-1'>
-                    <span>{blog.author.name}</span>
+                    <span>{name}</span>
                     <span>
                         <LuDot />
                     </span>

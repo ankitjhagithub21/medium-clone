@@ -20,10 +20,10 @@ const Blogs = () => {
    fetchBlogs()
   },[])
   return (
-    <div className='flex flex-col gap-10'>
+    <div className='flex flex-col'>
      {
       blogs.map((blog)=>{
-        return <Blog key={blog._id} blog={blog}/>
+        return <Blog key={blog._id} blog={blog} name={blog.author.name}  profilePhoto={blog.author.profilePhoto}/>
       })
      }
     </div>

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setUser } from './app/slices/authSlice'
 import NewStory from './pages/NewStory'
 import BlogDetails from './pages/BlogDetails'
+import Profile from './pages/Profile'
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state=>state.auth.user)
@@ -39,6 +40,7 @@ const App = () => {
       <Route path='/' element={user ? <Home /> : <LandingPage getUserFromServer={getUserFromServer}/>}/>
       <Route path='/new-story' element={user ? <NewStory /> : <Home/>}/>
       <Route path='/blog/:id' element={<BlogDetails/>}/>
+      <Route path='/user/:id' element={<Profile/>}/>
     </Routes>
    
     </>

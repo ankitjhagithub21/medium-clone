@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+
 
 const OtherUser = ({ user, isFollowing }) => {
   const [following, setFollowing] = useState(isFollowing);
@@ -24,16 +26,16 @@ const OtherUser = ({ user, isFollowing }) => {
 
   return (
     <div className='flex items-center gap-2 justify-between'>
-      <div className='flex gap-1 items-start'>
+      <Link className='flex gap-1 items-start' to={`/user/${user._id}`}>
         <img src={user.profilePhoto} alt="user profile image" className='w-8 rounded-full border' />
         <div>
           <h2 className='font-bold'>{user.name}</h2>
           <p className='text-sm'>{user.bio}</p>
         </div>
-      </div>
+      </Link>
       <div>
         <button 
-          className='px-4 py-2 text-sm border border-black rounded-full' 
+          className={`px-4 py-2 text-sm ${following ? 'bg-black text-white':'border border-black'}  rounded-full` }
           onClick={handleFollowUnfollow}
         >
           {following ? 'Unfollow' : 'Follow'}
