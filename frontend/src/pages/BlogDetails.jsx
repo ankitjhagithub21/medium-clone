@@ -8,6 +8,7 @@ import { FaTrash } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import PageLoading from './PageLoading';
 import { CiTrash,CiEdit } from "react-icons/ci";
+import Footer from '../components/Footer';
 
 const BlogDetails = () => {
     const navigate = useNavigate()
@@ -157,7 +158,7 @@ const BlogDetails = () => {
         <>
             <Navbar />
             <section className='lg:w-3/4 w-full mx-auto flex px-5 flex-col gap-5 py-10'>
-                <img src={`${import.meta.env.VITE_SERVER_URL}/${blog.thumbnail}`} alt="blog thumbnail" className='max-h-[50vh] object-contain' />
+                <img src={blog.thumbnail} alt="blog thumbnail" className='max-h-[50vh] object-contain' loading='lazy' />
                 <h2 className='md:text-4xl text-2xl text-gray-800 font-bold'>{blog.title}</h2>
                 <div className='flex items-center gap-2 '>
                     <img src={blog.author.profilePhoto} alt="author pic" className='w-12 rounded-full cursor-pointer' onClick={()=>navigate(`/user/${blog.author._id}`)}/>
@@ -259,6 +260,7 @@ const BlogDetails = () => {
                     </div>
                 </div>
             </div>
+            <Footer author={blog.author} />
         </>
     );
 };

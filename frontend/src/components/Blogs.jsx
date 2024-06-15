@@ -28,7 +28,7 @@ const Blogs = () => {
      {
       blogs.map((blog)=>{
         return <Blog key={blog._id} blog={blog} name={blog.author.name}  profilePhoto={blog.author.profilePhoto}/>
-      })
+      }).reverse()
      }
     </div>
   )

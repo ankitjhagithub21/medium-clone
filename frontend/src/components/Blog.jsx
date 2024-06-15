@@ -29,7 +29,7 @@ const Blog = ({ blog,profilePhoto,name }) => {
                     <p className='text-serif hidden md:block' dangerouslySetInnerHTML={{ __html: truncatedContent }}></p>
                 </div>
                 <div>
-                    <img src={`${import.meta.env.VITE_SERVER_URL}/${blog.thumbnail}`} alt="blog thumbnail" loading='lazy' className='object-cover object-center w-44' />
+                    <img src={blog.thumbnail} alt="blog thumbnail" loading='lazy' className='object-cover object-center w-44' />
                 </div>
             </div>
             <div className='flex justify-between mt-5 items-center'>

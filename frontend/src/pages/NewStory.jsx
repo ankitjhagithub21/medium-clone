@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import JoditEditor from 'jodit-react';
 import { useSelector } from 'react-redux';
 import StoryNav from '../components/StoryNav';
+import uploadImage from '../app/helpers/uploadImage';
 
 const NewStory = () => {
   const [loading, setLoading] = useState(false);
@@ -11,22 +12,35 @@ const NewStory = () => {
   const [topic, setTopic] = useState('');
   const [thumbnail, setThumbnail] = useState(null);
   const editor = useRef(null);
-  const currUser = useSelector(state=>state.auth.user)
+  const currUser = useSelector(state => state.auth.user);
+
   const handleSubmit = async () => {
     setLoading(true);
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('topic', topic);
-    if (thumbnail) {
-      formData.append('thumbnail', thumbnail);
-    }
 
     try {
+      let thumbnailUrl = '';
+      if (thumbnail) {
+        const uploadedImage = await uploadImage(thumbnail);
+        if (!uploadedImage) {
+          throw new Error('Error uploading image.');
+        }
+        thumbnailUrl = uploadedImage.url;
+      }
+
+      const body = JSON.stringify({
+        title,
+        content,
+        topic,
+        thumbnail: thumbnailUrl,
+      });
+
       const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/blogs/upload`, {
         method: 'POST',
         credentials: 'include',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
       });
       const data = await res.json();
       if (data.success) {
@@ -52,7 +66,7 @@ const NewStory = () => {
 
   return (
     <>
-     <StoryNav loading={loading} handleSubmit={handleSubmit} currUser={currUser}/>
+      <StoryNav loading={loading} handleSubmit={handleSubmit} currUser={currUser} />
       <div className="lg:w-1/2 my-10 p-5 w-full mx-auto">
         <div className="flex flex-col gap-5 font-serif">
           <input

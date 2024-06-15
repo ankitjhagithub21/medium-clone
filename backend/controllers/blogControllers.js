@@ -14,9 +14,9 @@ const uploadBlog = async (req, res) => {
 
 
         const user = req.user;
-        const { title, content , topic } = req.body;
+        const { title, content , topic,thumbnail } = req.body;
 
-        if (!title || !content || !topic) {
+        if (!title || !content || !topic || !thumbnail) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required."
@@ -24,22 +24,11 @@ const uploadBlog = async (req, res) => {
         }
 
 
-        if (!req.file) {
-            return res.status(400).json({
-                success: false,
-                message: "Use different image."
-            });
-        }
-
-
-
-
-
         const newBlog = new Blog({
             title,
             content,
             topic,
-            thumbnail: req.file.path,
+            thumbnail,
             author: user._id
         });
 
@@ -91,16 +80,7 @@ const deleteBlog = async (req, res) => {
             });
         }
 
-        // Delete the thumbnail image if it exists
-        if (blog.thumbnail) {
-            const thumbnailPath = path.resolve(__dirname, '../', blog.thumbnail);
-
-            fs.unlink(thumbnailPath, (err) => {
-                if (err) {
-                    console.error("Error deleting thumbnail:", err);
-                }
-            });
-        }
+       
 
         await Blog.findByIdAndDelete(blogId);
 
@@ -174,7 +154,7 @@ const updateBlog = async (req, res) => {
 
 const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({}).populate('author', 'name profilePhoto') 
+        const blogs = await Blog.find({}).populate('author', 'name profilePhoto bio') 
         if (!blogs) {
             return res.status(404).json({
                 success: false,

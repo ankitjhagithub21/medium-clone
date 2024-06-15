@@ -48,6 +48,8 @@ const Profile = () => {
   }
   const userBlogs = blogs.filter(blog => blog.author._id == user._id);
 
+  
+
   return (
     <>
       <Navbar />

@@ -26,8 +26,8 @@ const OtherUser = ({ user, isFollowing }) => {
 
   return (
     <div className='flex items-center gap-2 justify-between'>
-      <Link className='flex gap-1 items-start' to={`/user/${user._id}`}>
-        <img src={user.profilePhoto} alt="user profile image" className='w-8 rounded-full border' />
+      <Link className='flex gap-1 items-center' to={`/user/${user._id}`}>
+        <img src={user.profilePhoto} alt="user profile image" className='w-10 rounded-full border' />
         <div>
           <h2 className='font-bold'>{user.name}</h2>
           <p className='text-sm'>{user.bio}</p>
