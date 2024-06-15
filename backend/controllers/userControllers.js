@@ -81,7 +81,8 @@ const followUnFollowUser = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: `You are now following ${followedUser.name}.`
+                message: `You are now following ${followedUser.name}.`,
+                following:true,
             });
         } else {
             followingUser.following.splice(followingIndex, 1);
@@ -91,7 +92,8 @@ const followUnFollowUser = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: `You have unfollowed ${followedUser.name}.`
+                message: `You have unfollowed ${followedUser.name}.`,
+                following:false
             });
         }
     } catch (error) {

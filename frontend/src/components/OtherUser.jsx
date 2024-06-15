@@ -1,28 +1,11 @@
-import React, { useState } from 'react';
-import toast from 'react-hot-toast';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const OtherUser = ({ user, isFollowing }) => {
-  const [following, setFollowing] = useState(isFollowing);
+const OtherUser = ({ user, handleFollowUnfollow,following}) => {
+ 
 
-  const handleFollowUnfollow = async () => {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user/follow/${user._id}`, {
-        credentials: 'include'
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast.success(data.message);
-        setFollowing(!following);  
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Error!");
-    }
-  };
+  
 
   return (
     <div className='flex items-center gap-2 justify-between'>
@@ -36,7 +19,7 @@ const OtherUser = ({ user, isFollowing }) => {
       <div>
         <button 
           className={`px-4 py-2 text-sm ${following ? 'bg-black text-white':'border border-black'}  rounded-full` }
-          onClick={handleFollowUnfollow}
+          onClick={()=>handleFollowUnfollow(user._id)}
         >
           {following ? 'Unfollow' : 'Follow'}
         </button>

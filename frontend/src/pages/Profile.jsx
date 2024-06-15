@@ -6,7 +6,7 @@ import Blog from '../components/Blog';
 import { useSelector } from 'react-redux';
 import UpdateProfile from './UpdateProfile';
 
-const Profile = () => {
+const Profile = ({handleFollowUnfollow,following}) => {
   const { id } = useParams();
   const blogs = useSelector(state=>state.blogs.value)
   const [user, setUser] = useState(null);
@@ -69,17 +69,22 @@ const Profile = () => {
         </div>
         <div className="lg:w-1/4 w-full lg:border-l lg:p-5 flex flex-col gap-3 items-start">
           <img src={user.profilePhoto} alt="profile pic" loading="lazy" width={100} className="rounded-full" />
-          <p className="text-xl font-bold">{user.name}</p>
+          <p className="text-xl font-bold">{user?.name}</p>
           <div className="flex gap-2 items-center">
-            <p>Followers: {user.followers.length}</p>
-            <p>Following: {user.following.length}</p>
+            <p>Followers: {user?.followers.length}</p>
+            <p>Following: {user?.following.length}</p>
           </div>
           <p>{user.bio}</p>
-          {currUser?._id === user?._id && (
-            <button className="text-green-900" onClick={() => setIsOpen(true)}>
-              Edit Profile
+          {
+            currUser?._id == user?._id ? <button className="text-green-900" onClick={() => setIsOpen(true)}>
+            Edit Profile
+          </button> : <button className="bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded-full" onClick={()=>handleFollowUnfollow(user._id)}>
+              {
+                following ? 'Unfollow' :'follow'
+              }
             </button>
-          )}
+          }
+         
         </div>
       </div>
     </>

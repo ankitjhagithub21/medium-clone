@@ -7,8 +7,8 @@ import uploadImage from '../app/helpers/uploadImage';
 const UpdateProfile = ({ isOpen, setIsOpen }) => {
   const currUser = useSelector((state) => state.auth.user);
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const [name, setName] = useState(currUser.name);
-  const [bio, setBio] = useState(currUser.bio);
+  const [name, setName] = useState(currUser?.name);
+  const [bio, setBio] = useState(currUser?.bio);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 

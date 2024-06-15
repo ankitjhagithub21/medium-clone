@@ -7,10 +7,14 @@ import Navbar from '../components/Navbar'
 
 
 
-const Home = () => {
+const Home = ({handleFollowUnfollow,following}) => {
+ 
+  
+
   useEffect(() => {
     document.title = "Medium"
   }, [])
+
   return (
    <>
    <Navbar/>
@@ -21,7 +25,7 @@ const Home = () => {
       </div>
       <div className='lg:w-1/3 w-full p-5 lg:border-l flex flex-col gap-5'>
         <RecomTopics />
-       <OtherUsers/>
+       <OtherUsers handleFollowUnfollow={handleFollowUnfollow} following={following}/>
 
       </div>
     </section>
