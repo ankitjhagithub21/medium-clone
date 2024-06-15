@@ -19,7 +19,7 @@ const Home = () => {
         <Topics />
         <Blogs />
       </div>
-      <div className='lg:w-1/3 w-full p-5 border-l flex flex-col gap-5'>
+      <div className='lg:w-1/3 w-full p-5 lg:border-l flex flex-col gap-5'>
         <RecomTopics />
        <OtherUsers/>
 

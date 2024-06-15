@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { IoIosArrowDown } from "react-icons/io";
 import { useSelector } from 'react-redux';
 import { FaTrash } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import PageLoading from './PageLoading';
+import { CiTrash,CiEdit } from "react-icons/ci";
 
 const BlogDetails = () => {
+    const navigate = useNavigate()
     const { id } = useParams();
     const [blog, setBlog] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +22,7 @@ const BlogDetails = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(0); 
     const [commentCount,setCommentCount] = useState(0);
+    
 
     const handleAddComment = async (e) => {
         e.preventDefault();
@@ -89,6 +92,23 @@ const BlogDetails = () => {
         }
     };
 
+    const handleDeleteBlog = async() =>{
+        try{
+            const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/blogs/delete/${id}`,{
+                method:"DELETE",
+                credentials:'include'
+            })
+            const data = await res.json()
+            if(data.success){
+                toast.success(data.message)
+                navigate("/")
+            }
+        }catch(error){
+            console.log(error)
+            toast.error("Something were wrong.")
+        }
+    }
+
     useEffect(() => {
         const fetchBlog = async () => {
             try {
@@ -140,7 +160,7 @@ const BlogDetails = () => {
                 <img src={`${import.meta.env.VITE_SERVER_URL}/${blog.thumbnail}`} alt="blog thumbnail" className='max-h-[50vh] object-contain' />
                 <h2 className='md:text-4xl text-2xl text-gray-800 font-bold'>{blog.title}</h2>
                 <div className='flex items-center gap-2 '>
-                    <img src={blog.author.profilePhoto} alt="author pic" className='w-12 rounded-full' />
+                    <img src={blog.author.profilePhoto} alt="author pic" className='w-12 rounded-full cursor-pointer' onClick={()=>navigate(`/user/${blog.author._id}`)}/>
                     <div className='flex flex-col items-start'>
                         <span className='font-semibold'>{blog.author.name}</span>
                         <span>{formattedDate(blog.createdAt)}</span>
@@ -171,7 +191,14 @@ const BlogDetails = () => {
                         </button>
                         <span>{commentCount}</span>
                     </div>
+                    {
+                        user._id == blog.author._id && <>
+                        <CiTrash className='cursor-pointer' size={20} onClick={handleDeleteBlog}/>
+                        <CiEdit className='cursor-pointer' size={20} onClick={()=>navigate(`/update/${id}`)}/>
+                        </>
+                    }
                 </div>
+                
                 <div className='font-serif text-xl leading-relaxed' dangerouslySetInnerHTML={{ __html: blog.content }} />
             </section>
             <div className={`lg:w-1/3 md:w-1/2 overflow-auto w-full flex flex-col p-3 gap-5 transition-all shadow-lg h-full bg-white z-50 fixed ${isOpen ? 'right-0' : 'right-[-100%]'} top-0`}>

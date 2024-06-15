@@ -41,7 +41,7 @@ const Menu = () => {
                 </svg>
                 <span className='text-sm'>Write</span>
             </Link>
-            <div className='flex items-center gap-4 hover:text-black cursor-pointer'>
+            <Link className='flex items-center gap-4 hover:text-black cursor-pointer' to={`/user/${user._id}`}>
                 <svg
                     width={24}
                     height={24}
@@ -57,7 +57,7 @@ const Menu = () => {
                     />
                 </svg>
                 <span className='text-sm'>Profile</span>
-            </div>
+            </Link>
             <div className='flex items-center gap-4 hover:text-black cursor-pointer'>
                 <svg width={24} height={24} viewBox="0 0 24 24" fill="none" aria-label="Lists">
                     <path

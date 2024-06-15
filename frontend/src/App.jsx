@@ -10,6 +10,7 @@ import { setUser } from './app/slices/authSlice'
 import NewStory from './pages/NewStory'
 import BlogDetails from './pages/BlogDetails'
 import Profile from './pages/Profile'
+import UpdateBlog from './pages/UpdateBlog'
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state=>state.auth.user)
@@ -41,6 +42,7 @@ const App = () => {
       <Route path='/new-story' element={user ? <NewStory /> : <Home/>}/>
       <Route path='/blog/:id' element={<BlogDetails/>}/>
       <Route path='/user/:id' element={<Profile/>}/>
+      <Route path='/update/:id' element={<UpdateBlog/>}/>
     </Routes>
    
     </>

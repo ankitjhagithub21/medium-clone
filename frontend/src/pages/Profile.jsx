@@ -3,10 +3,12 @@ import { Link, useParams } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import PageLoading from './PageLoading'
 import Blog from '../components/Blog'
+import { useSelector } from 'react-redux'
 
 const Profile = () => {
     const {id} = useParams()
     const [user,setUser] = useState(null)
+    const currUser = useSelector(state=>state.auth.user)
     const [loading,setLoading] = useState(true)
     useEffect(()=>{
         const fetchUser = async() =>{
@@ -59,6 +61,9 @@ const Profile = () => {
             <p>Following: {user.following.length}</p>
         </div>
         <p>{user.bio}</p>
+        {
+            currUser._id == user._id && <button className='text-green-900'>Edit Profile</button>
+        }
         </div>
       </div>
     </>
