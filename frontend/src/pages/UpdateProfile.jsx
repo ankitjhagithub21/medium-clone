@@ -53,11 +53,16 @@ const UpdateProfile = ({ isOpen, setIsOpen }) => {
     <div className={`flex h-screen w-full items-center transition justify-center ${isOpen ? 'fixed' : 'hidden'} top-0 left-0 p-5`}>
       <div className="lg:w-1/3 w-full shadow-lg rounded-lg bg-white z-50 p-5">
         <h2 className="text-2xl font-semibold text-center mb-10">Profile Information</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 ">
+          <label htmlFor="image" className='border rounded-full mb-2 cursor-pointer mx-auto w-24 h-24 flex items-center justify-center bg-gray-100'>Image
+           
+          </label>
           <input
             type="file"
+            id='image'
+            
             onChange={(e) => setProfilePhoto(e.target.files[0])}
-            className="mb-3"
+            className="mb-3 hidden"
           />
           <label htmlFor="name">Name</label>
           <input
