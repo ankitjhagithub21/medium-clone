@@ -24,7 +24,7 @@ const Blog = ({ blog}) => {
                 </div>
             </div>
             <div className='flex items-center gap-4 cursor-pointer ' onClick={() => navigate(`/blog/${blog._id}`)}>
-                <div className={`${blog.thumbnail ? 'w-1/3' :'w-full'}`}>
+                <div className={`${blog.thumbnail ? 'w-3/4' :'w-full'}`}>
                     <h2 className='md:text-2xl mb-2 text-lg font-bold text-gray-800'>{blog.title}</h2>
                     <p className='text-serif hidden md:block' dangerouslySetInnerHTML={{ __html: truncatedContent }}></p>
                 </div>
