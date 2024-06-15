@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import truncate from 'html-truncate';
 
-const Blog = ({ blog,profilePhoto,name }) => {
+const Blog = ({ blog}) => {
     const navigate = useNavigate();
     const formattedDate = format(new Date(blog.createdAt), 'MMM dd, yyyy');
     
@@ -14,9 +14,9 @@ const Blog = ({ blog,profilePhoto,name }) => {
     return (
         <div className='flex flex-col w-full my-5'>
             <div className='flex items-center gap-2 mb-2'>
-                <img src={profilePhoto} alt="author pic" className='rounded-full cursor-pointer w-8 border' onClick={()=>navigate(`/user/${blog.author._id}`)}/>
+                <img src={blog.author.profilePhoto} alt="author pic" className='rounded-full cursor-pointer w-8 border' onClick={()=>navigate(`/user/${blog.author._id}`)}/>
                 <div className='text-sm flex items-center gap-1'>
-                    <span>{name}</span>
+                    <span>{blog.author.name}</span>
                     <span>
                         <LuDot />
                     </span>
@@ -24,13 +24,15 @@ const Blog = ({ blog,profilePhoto,name }) => {
                 </div>
             </div>
             <div className='flex items-center gap-4 cursor-pointer ' onClick={() => navigate(`/blog/${blog._id}`)}>
-                <div className='w-3/4 '>
+                <div className={`${blog.thumbnail ? 'w-1/3' :'w-full'}`}>
                     <h2 className='md:text-2xl mb-2 text-lg font-bold text-gray-800'>{blog.title}</h2>
                     <p className='text-serif hidden md:block' dangerouslySetInnerHTML={{ __html: truncatedContent }}></p>
                 </div>
-                <div>
-                    <img src={blog.thumbnail} alt="blog thumbnail" loading='lazy' className='object-cover object-center w-44' />
-                </div>
+               {
+                blog.thumbnail &&  <div>
+                <img src={blog.thumbnail} alt="blog thumbnail" loading='lazy' className='object-cover object-center w-44' />
+            </div>
+               }
             </div>
             <div className='flex justify-between mt-5 items-center'>
                 <div className='flex items-center gap-2 text-sm'>

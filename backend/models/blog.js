@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const blogSchema = new Schema({
     title: { type: String, required: true },
     content: { type: String, required: true },
-    thumbnail: { type: String, required: true },
+    thumbnail: { type: String },
     topic:{
         type:String,required:true
     },

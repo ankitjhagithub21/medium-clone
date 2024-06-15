@@ -1,10 +1,8 @@
 const Blog = require("../models/blog");
-const fs = require('fs')
-const path = require('path')
+
 
 const uploadBlog = async (req, res) => {
     try {
-
         if (!req.user) {
             return res.status(401).json({
                 success: false,
@@ -12,43 +10,47 @@ const uploadBlog = async (req, res) => {
             });
         }
 
+        const { user } = req;
+        const { title, content, topic, thumbnail } = req.body;
 
-        const user = req.user;
-        const { title, content , topic,thumbnail } = req.body;
-
-        if (!title || !content || !topic || !thumbnail) {
+        if (!title || !content || !topic) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required."
             });
         }
 
-
-        const newBlog = new Blog({
+        const blogData = {
             title,
             content,
             topic,
-            thumbnail,
             author: user._id
-        });
+        };
 
+        if (thumbnail) {
+            blogData.thumbnail = thumbnail;
+        }
+
+        const newBlog = new Blog(blogData);
         await newBlog.save();
+
         user.blogs.push(newBlog._id);
         await user.save();
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "Blog uploaded.",
             newBlog
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
-            message: error.message
+            message: "Internal server error."
         });
     }
 };
+
 
 
 const deleteBlog = async (req, res) => {

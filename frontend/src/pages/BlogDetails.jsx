@@ -158,7 +158,9 @@ const BlogDetails = () => {
         <>
             <Navbar />
             <section className='lg:w-3/4 w-full mx-auto flex px-5 flex-col gap-5 py-10'>
-                <img src={blog.thumbnail} alt="blog thumbnail" className='max-h-[50vh] object-contain' loading='lazy' />
+              {
+                blog.thumbnail &&   <img src={blog.thumbnail} alt="blog thumbnail" className='max-h-[50vh] object-contain' loading='lazy' />
+              }
                 <h2 className='md:text-4xl text-2xl text-gray-800 font-bold'>{blog.title}</h2>
                 <div className='flex items-center gap-2 '>
                     <img src={blog.author.profilePhoto} alt="author pic" className='w-12 rounded-full cursor-pointer' onClick={()=>navigate(`/user/${blog.author._id}`)}/>

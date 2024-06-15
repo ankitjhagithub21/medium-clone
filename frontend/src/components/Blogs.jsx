@@ -27,7 +27,7 @@ const Blogs = () => {
     <div className='flex flex-col'>
      {
       blogs.map((blog)=>{
-        return <Blog key={blog._id} blog={blog} name={blog.author.name}  profilePhoto={blog.author.profilePhoto}/>
+        return <Blog key={blog._id} blog={blog} />
       }).reverse()
      }
     </div>
