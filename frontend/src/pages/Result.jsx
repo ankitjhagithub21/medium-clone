@@ -34,7 +34,7 @@ const Result = () => {
                             <h2 className="sm:text-3xl text-2xl title-font font-medium text-gray-900 mt-4 mb-4">
                                 {blog.title}
                             </h2>
-                            <p className="leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: blog.content }}></p>
+                          
                             <div className="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full">
                                 <Link className="text-indigo-500 inline-flex items-center" to={`/blog/${blog._id}`}>
                                     Learn More
