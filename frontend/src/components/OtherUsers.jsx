@@ -8,7 +8,7 @@ const OtherUsers = ({handleFollowUnfollow,following}) => {
 
   useEffect(() => {
     const fetchAllUsers = async () => {
-      try { 
+      try {
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/user`);
         const data = await res.json();
         if (data.success) {
@@ -30,9 +30,8 @@ const OtherUsers = ({handleFollowUnfollow,following}) => {
           <OtherUser 
             user={user} 
             key={user._id} 
-           
+            following={currUser.following.includes(user._id)} 
             handleFollowUnfollow={handleFollowUnfollow} 
-            following={following} 
           />
         ))
       }
