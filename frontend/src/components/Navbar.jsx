@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
 import Menu from './Menu'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const Navbar = () => {
     const [isOpen,setIsOpen] = useState(false)
     const user = useSelector(state=>state.auth.user)
+    const navigate = useNavigate()
+    const [searchTerm,setSearchTerm] = useState('')
+     const handleSubmit = (e) => {
+        e.preventDefault()
+        navigate(`/search/${searchTerm}`)
+    }
+    
     return (
         <nav className='flex itesms-center justify-between py-2 px-4 border-b'>
             <div className='flex items-center gap-4'>
@@ -90,7 +97,7 @@ const Navbar = () => {
                         </defs>
                     </svg>
                 </Link>
-                <div className=' items-center gap-2 bg-gray-100 p-2 rounded-full hidden md:flex'>
+                <form className=' items-center gap-2 bg-gray-100 p-2 rounded-full hidden md:flex' onSubmit={handleSubmit}>
                     <div>
                         <svg width={24} height={24} viewBox="0 0 24 24" fill="none">
                             <path
@@ -102,8 +109,8 @@ const Navbar = () => {
                         </svg>
 
                     </div>
-                    <input type="text" placeholder='Search' className='bg-gray-100  h-full rounded-full bg-transparent  ' />
-                </div>
+                    <input type="text" value={searchTerm} onChange={(e)=>setSearchTerm(e.target.value)} placeholder='Search' className='bg-gray-100   h-full rounded-full bg-transparent  'required />
+                </form>
             </div>
 
             <div className='flex items-center gap-8 text-gray-600'>

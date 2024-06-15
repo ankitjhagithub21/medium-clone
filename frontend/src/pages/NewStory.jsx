@@ -13,7 +13,7 @@ const NewStory = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const editor = useRef(null);
   const currUser = useSelector(state => state.auth.user);
-
+ 
   const handleSubmit = async () => {
     setLoading(true);
 

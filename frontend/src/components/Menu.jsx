@@ -19,6 +19,7 @@ const Menu = () => {
                 toast.success(data.message)
                 navigate("/")
                 
+                
             }else{
                 toast.error(data.message)
             }
@@ -41,7 +42,7 @@ const Menu = () => {
                 </svg>
                 <span className='text-sm'>Write</span>
             </Link>
-            <Link className='flex items-center gap-4 hover:text-black cursor-pointer' to={`/user/${user._id}`}>
+            <Link className='flex items-center gap-4 hover:text-black cursor-pointer' to={`/user/${user?._id}`}>
                 <svg
                     width={24}
                     height={24}

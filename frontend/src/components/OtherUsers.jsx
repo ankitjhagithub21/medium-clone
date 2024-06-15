@@ -25,7 +25,7 @@ const OtherUsers = ({handleFollowUnfollow}) => {
     <div className='flex flex-col gap-4'>
       <h2 className='font-bold text-lg'>Who to follow</h2>
       {users
-        .filter(user => user._id !== currUser._id)  // Filter out the current user
+        .filter(user => user._id !== currUser._id)  
         .map(user => (
           <OtherUser 
             user={user} 
@@ -33,6 +33,7 @@ const OtherUsers = ({handleFollowUnfollow}) => {
            
             handleFollowUnfollow={handleFollowUnfollow} 
             following={currUser.following.includes(user._id)} 
+
           />
         ))
       }

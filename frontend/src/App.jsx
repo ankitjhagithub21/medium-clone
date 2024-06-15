@@ -12,6 +12,7 @@ import Profile from './pages/Profile'
 import UpdateBlog from './pages/UpdateBlog'
 import toast from 'react-hot-toast'
 import NotFound from './pages/NotFound'
+import Result from './pages/Result'
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state=>state.auth.user)
@@ -30,6 +31,7 @@ const App = () => {
     }
 
   }
+  
   
   const handleFollowUnfollow = async (userId) => {
     try {
@@ -64,6 +66,7 @@ const App = () => {
       <Route path='/user/:id' element={<Profile handleFollowUnfollow={handleFollowUnfollow} following={following} />}/>
       <Route path='/update/:id' element={<UpdateBlog/>}/>
       <Route path='/*' element={<NotFound/>}/>
+      <Route path='/search/:id' element={<Result/>}/>
     </Routes>
    
     </>

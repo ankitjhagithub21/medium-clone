@@ -1,17 +1,19 @@
 import React, { useState, useEffect,useRef } from 'react'
 import StoryNav from '../components/StoryNav'
 import { useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import PageLoading from './PageLoading'
 import JoditEditor from 'jodit-react';
+import toast from 'react-hot-toast'
 
 const UpdateBlog = () => {
     const { id } = useParams()
     const [blog, setBlog] = useState(null)
     const currUser = useSelector(state => state.auth.user)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
+    
     const editor = useRef(null);
     const handleSubmit = async () => {
         setLoading(true);
@@ -26,7 +28,9 @@ const UpdateBlog = () => {
             });
             const data = await res.json();
             if (data.success) {
-                setBlog(data.blog);
+                toast.success("Blog updated successfully.")
+                setBlog(null);
+                
             } else {
                 console.error('Failed to update the blog.');
             }
@@ -51,6 +55,9 @@ const UpdateBlog = () => {
             } catch (error) {
                 console.log(error);
             }
+            finally{
+                setLoading(false)
+            }
         };
         fetchBlog();
     }, [id]);
@@ -60,7 +67,7 @@ const UpdateBlog = () => {
         return <PageLoading />
     }
     if (!blog) {
-        return <p>Blog not found.</p>
+        return <Navigate to={"/"}/>
     }
     return (
         <>
