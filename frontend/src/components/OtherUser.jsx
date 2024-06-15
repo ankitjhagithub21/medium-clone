@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 
 const OtherUser = ({ user, handleFollowUnfollow,following}) => {
  
 
-  
+    const [isFollowing,setIsFollowing] =useState(following)
 
   return (
     <div className='flex items-center gap-2 justify-between'>
@@ -18,10 +18,13 @@ const OtherUser = ({ user, handleFollowUnfollow,following}) => {
       </Link>
       <div>
         <button 
-          className={`px-4 py-2 text-sm ${following ? 'bg-black text-white':'border border-black'}  rounded-full` }
-          onClick={()=>handleFollowUnfollow(user._id)}
+          className={`px-4 py-2 text-sm ${isFollowing ? 'bg-black text-white':'border border-black'}  rounded-full` }
+          onClick={()=>{
+            handleFollowUnfollow(user._id)
+            setIsFollowing(!isFollowing)
+          }}
         >
-          {following ? 'Unfollow' : 'Follow'}
+          {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       </div>
     </div>
