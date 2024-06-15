@@ -78,7 +78,7 @@ const Result = () => {
                                     {blog.comments.length}
                                 </span>
                             </div>
-                            <a className="inline-flex items-center">
+                            <Link className="inline-flex items-center" to={`/user/${blog.author._id}`}>
                                 <img
                                     alt="blog"
                                     src={blog.author.profilePhoto}
@@ -92,7 +92,7 @@ const Result = () => {
                                         {blog.createdAt.slice(0, 10)}
                                     </span>
                                 </span>
-                            </a>
+                            </Link>
                         </div>
                     ))}
                 </div>
