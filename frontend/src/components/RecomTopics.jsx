@@ -1,18 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 const RecomTopics = () => {
-    const topics = [
-        "Data Science",
-        "Self Improvement",
-        "Writing",
-        "Relationships",
-        "Politics",
-        "Cryptocurrency",
-        "Productivity"
-    ]
+  const blogs = useSelector(state=>state.blogs.value)
+    const topics = blogs.map((blog)=>blog.topic)
   return (
     <div>
-        <h2 className='font-bold text-lg mb-5'>Recommended topics</h2>
+        <h2 className='font-bold text-lg mb-5'>Topics</h2>
          <div className='flex gap-2 flex-wrap items-center'>
       {
         topics.map((topic,index)=>{
