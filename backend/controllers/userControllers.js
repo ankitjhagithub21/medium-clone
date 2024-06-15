@@ -120,7 +120,10 @@ const updateProfile = async(req,res) =>{
         }
         user.name = name
         user.bio = bio
-        user.profilePhoto = profilePhoto
+        if(profilePhoto){
+            user.profilePhoto = profilePhoto
+        }
+        
 
         await user.save()
 
