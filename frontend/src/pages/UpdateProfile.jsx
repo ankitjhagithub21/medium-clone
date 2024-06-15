@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { setUser } from '../app/slices/authSlice';
-import uploadImage from '../app/helpers/uploadImage';
+import uploadImage from '../helpers/uploadImage';
 
 const UpdateProfile = ({ isOpen, setIsOpen }) => {
   const currUser = useSelector((state) => state.auth.user);
@@ -44,11 +44,7 @@ const UpdateProfile = ({ isOpen, setIsOpen }) => {
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({
-          name,
-          bio,
-          profilePhoto: uploadedImage.url || currUser.profilePhoto,
-        }),
+        body: JSON.stringify({ name, bio, profilePhoto: uploadedImage.url || currUser.profilePhoto }),
       });
 
       const data = await res.json();
@@ -67,15 +63,11 @@ const UpdateProfile = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <div
-      className={`flex h-screen w-full items-center transition justify-center ${
-        isOpen ? 'fixed' : 'hidden'
-      } top-0 left-0 p-5`}
-    >
-      <div className="lg:w-1/3 w-full shadow-lg rounded-lg bg-white z-50 p-5">
+    <div className={`flex h-screen w-full items-center transition justify-center ${isOpen ? 'fixed' : 'hidden'} top-0 left-0 p-5`}>
+      <div className="lg:w-1/3 w-full  shadow-lg rounded-lg bg-white z-50 p-5">
         <h2 className="text-2xl font-semibold text-center mb-10">Profile Information</h2>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <label htmlFor="image" className="mb-2 cursor-pointer mx-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-2 ">
+        <label htmlFor="image" className="mb-2 cursor-pointer mx-auto">
             <img
               src={
                 profilePhotoURL || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'
@@ -86,7 +78,8 @@ const UpdateProfile = ({ isOpen, setIsOpen }) => {
           </label>
           <input
             type="file"
-            id="image"
+            id='image'
+            
             onChange={(e) => setProfilePhoto(e.target.files[0])}
             className="mb-3 hidden"
           />

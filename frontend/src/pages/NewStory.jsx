@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import JoditEditor from 'jodit-react';
 import { useSelector } from 'react-redux';
 import StoryNav from '../components/StoryNav';
-import uploadImage from '../app/helpers/uploadImage';
+import uploadImage from '../helpers/uploadImage';
 
 const NewStory = () => {
   const [loading, setLoading] = useState(false);
